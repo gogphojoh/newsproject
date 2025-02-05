@@ -1,9 +1,9 @@
 <?php 
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\AuthorController;
-    use App\Http\Controllers\CategoriesController;
+    use App\Http\Controllers\CategoryController;
     use App\Http\Controllers\NewsController;
-    use App\Http\Controllers\FeaturedNewsController;
+    use App\Http\Controllers\FeaturedNewController;
     use App\Http\Controllers\UserController;
     use App\Http\Controllers\SuscriptionController;
     use App\Http\Controllers\NewsViewController;
@@ -18,11 +18,11 @@
     });
 
     Route::prefix('categories')->group(function () {
-        Route::get('/', [CategoriesController::class, 'index']);
-        Route::post('/store', [CategoriesController::class, 'store']);
-        Route::get('/show/{id}', [CategoriesController::class, 'show']);
-        Route::put('/update/{id}', [CategoriesController::class, 'update']);
-        Route::delete('/destroy/{id}', [CategoriesController::class, 'destroy']);
+        Route::get('/', [CategoryController::class, 'index']);
+        Route::post('/store', [CategoryController::class, 'store']);
+        Route::get('/show/{id}', [CategoryController::class, 'show']);
+        Route::put('/update/{id}', [CategoryController::class, 'update']);
+        Route::delete('/destroy/{id}', [CategoryController::class, 'destroy']);
     });
 
     Route::prefix('news')->group(function () {
@@ -34,11 +34,11 @@
     });
 
     Route::prefix('featured_news')->group(function () {
-        Route::get('/', [FeaturedNewsController::class, 'index']);
-        Route::post('/store', [FeaturedNewsController::class, 'store']);
-        Route::get('/show/{id}', [FeaturedNewsController::class, 'show']);
-        Route::put('/update/{id}', [FeaturedNewsController::class, 'update']);
-        Route::delete('/destroy/{id}', [FeaturedNewsController::class, 'destroy']);
+        Route::get('/', [FeaturedNewController::class, 'index']);
+        Route::post('/store', [FeaturedNewController::class, 'store']);
+        Route::get('/show/{id}', [FeaturedNewController::class, 'show']);
+        Route::put('/update/{id}', [FeaturedNewController::class, 'update']);
+        Route::delete('/destroy/{id}', [FeaturedNewController::class, 'destroy']);
     });
 
     Route::prefix('users')->group(function () {

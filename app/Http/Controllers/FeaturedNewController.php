@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categories;
 use Illuminate\Http\Request;
+use App\Models\FeaturedNew;
 
-class CategoriesController extends Controller
+class FeaturedNewController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = Categories::all();
-        return response()->json($categories, 200);
+        $featurednews = FeaturedNew::all();
+        return response()->json($featurednews, 200);
     }
 
     /**
