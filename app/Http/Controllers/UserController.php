@@ -1,17 +1,26 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Core\UseCases\CreateUser;
+use App\Core\UseCases\UpdateUser;
+use App\Core\UseCases\DeleteUser;
 use App\Infrastructure\Persistence\EloquentUserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
+    protected $createUser;
+    protected $updateUser;
+    protected $deleteUser;
     protected $userRepository;
 
-    public function __construct(EloquentUserRepository $userRepository)
+    public function __construct(EloquentUserRepository $userRepository, CreateUser $createUser, UpdateUser $updateUser, DeleteUser $deleteUser)
     {
         $this->userRepository = $userRepository;
+        $this->createUser = $createUser;
+        $this->updateUser = $updateUser;
+        $this->deleteUser = $deleteUser;
     }
 
     public function index()
@@ -27,21 +36,20 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $user = $this->userRepository->createUser($request->all());
+        $user = $this->createUser->execute($request->all());
         return response()->json($user, 201);
     }
 
     public function update(Request $request, $id)
     {
-        $user = $this->userRepository->updateUser($id, $request->all());
+        $user = $this->updateUser->execute($id, $request->all());
         return $user ? response()->json($user) : response()->json(['message' => 'User not found'], 404);
     }
 
     public function destroy($id)
     {
-        $deleted = $this->userRepository->deleteUser($id);
+        $deleted = $this->deleteUser->execute($id);
         return $deleted ? response()->json(['message' => 'User deleted']) : response()->json(['message' => 'User not found'], 404);
     }
 }
-
 ?>

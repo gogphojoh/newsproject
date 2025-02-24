@@ -8,7 +8,7 @@ class EloquentUserRepository implements UserRepository
 {
     public function getAllUsers()
     {
-        return User::all();
+        return User::all();  // Correct method to get all users
     }
 
     public function getUserById($id)
@@ -36,4 +36,5 @@ class EloquentUserRepository implements UserRepository
         return User::destroy($id);
     }
 }
+
 ?>

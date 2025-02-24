@@ -18,3 +18,6 @@ class User extends Model
     protected $fillable = ['nombre', 'email', 'clave', 'tipo_usuario', 'fecha_registro'];
     public $timestamps = true;
 }
+
+
+
