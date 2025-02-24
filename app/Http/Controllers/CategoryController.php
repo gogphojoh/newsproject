@@ -12,8 +12,21 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return response()->json($categories, 200);
+        try {
+            $categories = Category::all();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Categorías recuperadas exitosamente.',
+                'data' => $categories,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al recuperar las categorías.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -21,7 +34,29 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            // Validar la solicitud
+            $request->validate([
+                'nombre_categoria' => 'required|string|max:255',
+            ]);
+
+            // Crear y guardar la categoría
+            $category = Category::create([
+                'nombre_categoria' => $request->nombre_categoria,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Categoría creada exitosamente.',
+                'data' => $category,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear la categoría.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -29,7 +64,21 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $category = Category::findOrFail($id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Categoría recuperada exitosamente.',
+                'data' => $category,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Categoría no encontrada.',
+                'error' => $e->getMessage(),
+            ], 404);
+        }
     }
 
     /**
@@ -37,7 +86,28 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            // Validar la solicitud
+            $request->validate([
+                'nombre_categoria' => 'nullable|string|max:255',
+            ]);
+
+            // Buscar y actualizar la categoría
+            $category = Category::findOrFail($id);
+            $category->update($request->only(['nombre_categoria']));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Categoría actualizada exitosamente.',
+                'data' => $category,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar la categoría.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -45,6 +115,20 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $category = Category::findOrFail($id);
+            $category->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Categoría eliminada exitosamente.',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar la categoría.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

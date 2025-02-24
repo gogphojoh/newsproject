@@ -1,24 +1,20 @@
 <?php
 
-namespace App\Models;
+namespace App\Core\Entities;
+
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+
+
+class User extends Model
 {
-    use HasFactory;
     protected $table = 'users';
     protected $primaryKey = 'id_usuario';
-    public $incrementing = true;
-    protected $fillable = [
-        'nombre',
-        'email',
-        'clave',
-        'tipo_usuario',
-        'fecha_registro',
-    ];
-    public $timestamps = false;
+    protected $fillable = ['nombre', 'email', 'clave', 'tipo_usuario', 'fecha_registro'];
+    public $timestamps = true;
 }

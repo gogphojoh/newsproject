@@ -1,50 +1,47 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Infrastructure\Persistence\EloquentUserRepository;
 use Illuminate\Http\Request;
-use App\Models\User;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $userRepository;
+
+    public function __construct(EloquentUserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function index()
     {
-        $user = User::all();
-        return response()->json($user, 200);
+        return response()->json($this->userRepository->getAllUsers());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function show($id)
+    {
+        $user = $this->userRepository->getUserById($id);
+        return $user ? response()->json($user) : response()->json(['message' => 'User not found'], 404);
+    }
+
     public function store(Request $request)
     {
-        //
+        $user = $this->userRepository->createUser($request->all());
+        return response()->json($user, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $user = $this->userRepository->updateUser($id, $request->all());
+        return $user ? response()->json($user) : response()->json(['message' => 'User not found'], 404);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $deleted = $this->userRepository->deleteUser($id);
+        return $deleted ? response()->json(['message' => 'User deleted']) : response()->json(['message' => 'User not found'], 404);
     }
 }
+
+?>
